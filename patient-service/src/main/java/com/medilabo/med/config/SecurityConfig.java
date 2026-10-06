@@ -34,7 +34,6 @@ public class SecurityConfig {
                 .password(passwordEncoder.encode(organizerPassword))
                 .roles("ORGANIZER")
                 .build();
-
         return new InMemoryUserDetailsManager(organizer);
     }
 
