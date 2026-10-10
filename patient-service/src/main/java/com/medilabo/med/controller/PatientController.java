@@ -28,6 +28,12 @@ public class PatientController {
         return patientService.getPatientById(id);
     }
 
+    @GetMapping("/search")
+    public List<Patient> getPatientsByLastName(
+            @RequestParam String lastName) {
+        return patientService.getPatientsByLastName(lastName);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Patient createPatient(@Valid @RequestBody Patient patient) {
