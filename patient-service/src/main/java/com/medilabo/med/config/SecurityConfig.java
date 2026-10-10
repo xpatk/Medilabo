@@ -42,7 +42,9 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().authenticated()
+                        .requestMatchers("/api/auth/me").hasRole("ORGANIZER")
+                        .requestMatchers("/api/patients/**").hasRole("ORGANIZER")
+                        .anyRequest().denyAll()
                 )
                 .httpBasic(Customizer.withDefaults());
 
