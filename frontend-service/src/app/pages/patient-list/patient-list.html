@@ -1,0 +1,61 @@
+<main class="app-page">
+  <section class="dashboard" aria-labelledby="dashboard-title">
+    <header class="dashboard-header">
+      <div>
+        <p class="eyebrow">Medilabo</p>
+        <h1 id="dashboard-title">Patient records</h1>
+        <p class="subtitle">
+          Signed in as <strong>{{ username() }}</strong>
+        </p>
+      </div>
+      <div class="header-actions">
+        <a class="add-button" routerLink="/patients/new">
+          + Add patient
+        </a>
+
+        <button type="button" class="logout-button" (click)="logout()">
+          Sign out
+        </button>
+      </div>
+    </header>
+
+    @if (errorMessage()) {
+    <p class="error-message" role="alert">{{ errorMessage() }}</p>
+    }
+
+    @if (loading()) {
+    <p class="loading-message">Loading patient records…</p>
+    } @else if (patients().length === 0) {
+    <p class="empty-message">No patients found.</p>
+    } @else {
+    <div class="patient-grid">
+      @for (patient of patients(); track patient.id) {
+      <a
+        class="patient-card"
+        [routerLink]="['/patients', patient.id]"
+        [attr.aria-label]="'View record for ' + patient.firstName + ' ' + patient.lastName"
+      >
+        <h2>{{ patient.firstName }} {{ patient.lastName }}</h2>
+
+        <dl>
+          <div>
+            <dt>Date of birth</dt>
+            <dd>{{ patient.birthDate }}</dd>
+          </div>
+          <div>
+            <dt>Gender</dt>
+            <dd>{{ patient.gender }}</dd>
+          </div>
+          <div>
+            <dt>Phone</dt>
+            <dd>{{ patient.phone || 'Not provided' }}</dd>
+          </div>
+        </dl>
+
+        <span class="patient-link">View patient record →</span>
+      </a>
+      }
+    </div>
+    }
+  </section>
+</main>

@@ -44,6 +44,10 @@ public class Patient {
     @Column(length = 40)
     private String phone;
 
+    public Long getId() {
+        return id;
+    }
+
     public String getFirstName() {
         return firstName;
     }

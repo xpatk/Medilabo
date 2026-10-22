@@ -1,0 +1,43 @@
+<main class="login-page">
+  <section class="login-card" aria-labelledby="login-title">
+    <p class="eyebrow">Medilabo</p>
+    <h1 id="login-title">Organizer sign in</h1>
+    <p class="subtitle">Manage patient records.</p>
+
+    <form (ngSubmit)="login()">
+      <div class="field">
+        <label for="username">Username</label>
+        <input
+          id="username"
+          name="username"
+          type="text"
+          autocomplete="username"
+          [ngModel]="username()"
+          (ngModelChange)="username.set($event)"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          [ngModel]="password()"
+          (ngModelChange)="password.set($event)"
+          required
+        />
+      </div>
+
+      @if (errorMessage()) {
+      <p class="error-message" role="alert">{{ errorMessage() }}</p>
+      }
+
+      <button type="submit" [disabled]="loading()">
+        {{ loading() ? 'Signing in…' : 'Sign in' }}
+      </button>
+    </form>
+  </section>
+</main>

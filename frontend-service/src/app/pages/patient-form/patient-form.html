@@ -1,0 +1,137 @@
+<main class="app-page">
+  <section class="dashboard form-dashboard" aria-labelledby="form-title">
+    <header class="dashboard-header">
+      <div>
+        <p class="eyebrow">Medilabo · Patient records</p>
+        <h1 id="form-title">{{ title() }}</h1>
+        <p class="subtitle">
+          @if (isEditMode()) {
+          Update the personal information for this patient.
+          } @else {
+          Create a new patient record.
+          }
+        </p>
+      </div>
+
+      <div class="header-actions">
+        <button type="button" class="logout-button" (click)="logout()">
+          Sign out
+        </button>
+      </div>
+    </header>
+
+    @if (loading()) {
+    <p class="loading-message">Loading patient information…</p>
+    } @else {
+    <form class="patient-form" (ngSubmit)="save()">
+      <div class="form-grid">
+        <div class="field">
+          <label for="firstName">First name *</label>
+          <input
+            id="firstName"
+            name="firstName"
+            type="text"
+            maxlength="150"
+            autocomplete="given-name"
+            [ngModel]="firstName()"
+            (ngModelChange)="firstName.set($event)"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="lastName">Last name *</label>
+          <input
+            id="lastName"
+            name="lastName"
+            type="text"
+            maxlength="150"
+            autocomplete="family-name"
+            [ngModel]="lastName()"
+            (ngModelChange)="lastName.set($event)"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="birthDate">Date of birth *</label>
+          <input
+            id="birthDate"
+            name="birthDate"
+            type="date"
+            [ngModel]="birthDate()"
+            (ngModelChange)="birthDate.set($event)"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="gender">Gender *</label>
+          <select
+            id="gender"
+            name="gender"
+            [ngModel]="gender()"
+            (ngModelChange)="gender.set($event)"
+            required
+          >
+            <option value="" disabled>Select a gender</option>
+            <option value="F">Female</option>
+            <option value="M">Male</option>
+          </select>
+        </div>
+
+        <div class="field field-full">
+          <label for="address">Address</label>
+          <input
+            id="address"
+            name="address"
+            type="text"
+            maxlength="255"
+            autocomplete="street-address"
+            [ngModel]="address()"
+            (ngModelChange)="address.set($event)"
+          />
+        </div>
+
+        <div class="field field-full">
+          <label for="phone">Phone number</label>
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            maxlength="40"
+            autocomplete="tel"
+            [ngModel]="phone()"
+            (ngModelChange)="phone.set($event)"
+          />
+        </div>
+      </div>
+
+      @if (errorMessage()) {
+      <p class="error-message" role="alert">{{ errorMessage() }}</p>
+      }
+
+      <div class="form-actions">
+        <button
+          type="button"
+          class="secondary-button"
+          [disabled]="saving()"
+          (click)="cancel()"
+        >
+          Cancel
+        </button>
+
+        <button type="submit" [disabled]="saving()">
+          {{
+          saving()
+          ? 'Saving…'
+          : isEditMode()
+          ? 'Save changes'
+          : 'Create patient'
+          }}
+        </button>
+      </div>
+    </form>
+    }
+  </section>
+</main>
