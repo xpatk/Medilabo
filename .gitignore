@@ -35,3 +35,5 @@ build/
 **/src/main/resources/application-local.properties
 .idea/
 .DS_Store
+.env
+auth-service/src/main/resources/keys/private.pem

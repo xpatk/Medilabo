@@ -1,0 +1,67 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: medilabo-mysql
+    environment:
+      MYSQL_DATABASE: medilabo_patients
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  patient-service:
+    build:
+      context: ./patient-service
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  auth-service:
+    build:
+      context: ./auth-service
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      ORGANIZER_PASSWORD: ${ORGANIZER_PASSWORD}
+    secrets:
+      - auth_private_key
+
+  gateway-service:
+    build:
+      context: ./gateway-service
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "8080:8080"
+    depends_on:
+      - patient-service
+      - auth-service
+
+  frontend-service:
+    build:
+      context: ./frontend-service
+    ports:
+      - "4200:80"
+    depends_on:
+      - gateway-service
+
+volumes:
+  mysql-data:
+
+secrets:
+  auth_private_key:
+    file: ./auth-service/src/main/resources/keys/private.pem
