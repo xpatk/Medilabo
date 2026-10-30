@@ -73,6 +73,78 @@
         </div>
       </dl>
     </section>
+
+    <section class="notes-section" aria-labelledby="notes-title">
+      <div class="section-heading">
+        <div>
+          <p class="section-eyebrow">Medical history</p>
+          <h2 id="notes-title">Practitioner notes</h2>
+        </div>
+
+        <span class="notes-count">
+          {{ notes().length }} note{{ notes().length === 1 ? '' : 's' }}
+        </span>
+      </div>
+
+      @if (notesLoading()) {
+      <p class="loading-message">Loading patient notes…</p>
+      } @else if (notesErrorMessage()) {
+      <p class="error-message" role="alert">
+        {{ notesErrorMessage() }}
+      </p>
+      } @else if (notes().length === 0) {
+      <p class="empty-message">
+        No medical notes have been recorded for this patient.
+      </p>
+      } @else {
+      <ol class="notes-list">
+        @for (note of notes(); track note.id) {
+        <li class="note-card">
+          <div class="note-meta">
+            <span>Consultation note</span>
+            <time [attr.datetime]="note.createdAt">
+              {{ note.createdAt | date: 'medium' }}
+            </time>
+          </div>
+
+          <p class="note-text">{{ note.text }}</p>
+        </li>
+        }
+      </ol>
+      }
+
+      <form class="note-form" (ngSubmit)="createNote()">
+        <div class="form-heading">
+          <h3>Add a consultation note</h3>
+          <p>Formatting and line breaks will be preserved.</p>
+        </div>
+
+        <label for="note-text">Observation</label>
+
+        <textarea
+          id="note-text"
+          name="noteText"
+          rows="6"
+          placeholder="Write the practitioner observation…"
+          [ngModel]="newNoteText()"
+          (ngModelChange)="newNoteText.set($event)"
+          [disabled]="savingNote()"
+          required
+        ></textarea>
+
+        @if (noteFormErrorMessage()) {
+        <p class="error-message" role="alert">
+          {{ noteFormErrorMessage() }}
+        </p>
+        }
+
+        <div class="form-actions">
+          <button type="submit" [disabled]="savingNote()">
+            {{ savingNote() ? 'Saving note…' : 'Save note' }}
+          </button>
+        </div>
+      </form>
+    </section>
     }
   </section>
 </main>

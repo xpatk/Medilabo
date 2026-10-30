@@ -1,0 +1,281 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+  color: #16324f;
+  font-family: Arial, sans-serif;
+}
+
+.app-page {
+  min-height: 100dvh;
+  padding: 48px 24px;
+  background:
+    radial-gradient(circle at top left, rgb(191 229 255 / 60%), transparent 40%),
+    linear-gradient(135deg, #f8fcff, #edf7ff);
+}
+
+.dashboard {
+  width: min(100%, 1120px);
+  margin: 0 auto;
+  padding: 34px;
+  border: 1px solid #cfe1ef;
+  border-radius: 22px;
+  background: rgb(255 255 255 / 92%);
+  box-shadow: 0 20px 55px rgb(18 68 105 / 12%);
+}
+
+.dashboard-header,
+.section-heading,
+.note-meta,
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.dashboard-header {
+  padding-bottom: 26px;
+  border-bottom: 1px solid #d8e7f2;
+}
+
+.eyebrow,
+.section-eyebrow {
+  margin: 0 0 8px;
+  color: #176cac;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  color: #0b3d68;
+}
+
+h1 {
+  font-size: clamp(2rem, 4vw, 2.7rem);
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+h3 {
+  font-size: 1.05rem;
+}
+
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.back-button,
+.edit-button,
+.logout-button,
+button {
+  padding: 10px 14px;
+  border-radius: 9px;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.back-button {
+  color: #146aa8;
+}
+
+.edit-button,
+button {
+  border: 1px solid #0f6eae;
+  background: #0f6eae;
+  color: #ffffff;
+}
+
+.edit-button:hover,
+button:hover:not(:disabled) {
+  border-color: #09588e;
+  background: #09588e;
+}
+
+.logout-button {
+  border: 1px solid #b9d4e8;
+  background: #f8fcff;
+  color: #155886;
+}
+
+.patient-details,
+.notes-section {
+  margin-top: 28px;
+  padding: 26px;
+  border: 1px solid #d8e7f2;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.patient-details h2 {
+  margin-bottom: 20px;
+}
+
+.patient-information {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+}
+
+.patient-information div {
+  padding: 15px;
+  border-radius: 12px;
+  background: #f5faff;
+}
+
+dt {
+  margin-bottom: 6px;
+  color: #57718a;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+dd {
+  margin: 0;
+  color: #143f63;
+  font-weight: 700;
+}
+
+.notes-count {
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #e8f5ff;
+  color: #12649d;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.notes-list {
+  display: grid;
+  gap: 14px;
+  margin: 22px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.note-card {
+  padding: 18px;
+  border: 1px solid #d8e7f2;
+  border-left: 4px solid #39a2df;
+  border-radius: 12px;
+  background: #fbfdff;
+}
+
+.note-meta {
+  color: #5b758d;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.note-meta time {
+  color: #1e6d9f;
+}
+
+.note-text {
+  margin: 15px 0 0;
+  color: #244965;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.note-form {
+  display: grid;
+  gap: 12px;
+  margin-top: 26px;
+  padding-top: 26px;
+  border-top: 1px solid #d8e7f2;
+}
+
+.form-heading p {
+  margin: 5px 0 0;
+  color: #668097;
+  font-size: 0.92rem;
+}
+
+label {
+  color: #244965;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+textarea {
+  box-sizing: border-box;
+  width: 100%;
+  resize: vertical;
+  padding: 13px;
+  border: 1px solid #b8d4e8;
+  border-radius: 10px;
+  color: #16324f;
+  font: inherit;
+  line-height: 1.5;
+}
+
+textarea:focus {
+  border-color: #1880c3;
+  outline: 3px solid rgb(24 128 195 / 18%);
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.loading-message,
+.empty-message,
+.error-message {
+  margin: 20px 0 0;
+  padding: 13px;
+  border-radius: 10px;
+}
+
+.loading-message,
+.empty-message {
+  background: #f1f8fd;
+  color: #52718a;
+}
+
+.error-message {
+  border: 1px solid #fecaca;
+  background: #fff4f4;
+  color: #b42318;
+}
+
+@media (max-width: 760px) {
+  .app-page {
+    padding: 20px 14px;
+  }
+
+  .dashboard {
+    padding: 22px;
+  }
+
+  .dashboard-header,
+  .section-heading,
+  .note-meta {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .header-actions {
+    justify-content: flex-start;
+  }
+
+  .patient-information {
+    grid-template-columns: 1fr;
+  }
+}
