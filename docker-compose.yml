@@ -20,6 +20,27 @@ services:
       retries: 10
       start_period: 30s
 
+  mongodb:
+    image: mongo:8.0
+    container_name: medilabo-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mongosh",
+          "--quiet",
+          "--eval",
+          "db.runCommand('ping').ok",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
   patient-service:
     build:
       context: ./patient-service
@@ -29,6 +50,15 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
     depends_on:
       mysql:
+        condition: service_healthy
+
+  notes-service:
+    build:
+      context: ./notes-service
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      mongodb:
         condition: service_healthy
 
   auth-service:
@@ -49,6 +79,7 @@ services:
       - "8080:8080"
     depends_on:
       - patient-service
+      - notes-service
       - auth-service
 
   frontend-service:
@@ -61,6 +92,7 @@ services:
 
 volumes:
   mysql-data:
+  mongodb-data:
 
 secrets:
   auth_private_key:

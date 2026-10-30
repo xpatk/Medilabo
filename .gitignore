@@ -36,4 +36,4 @@ build/
 .idea/
 .DS_Store
 .env
-auth-service/src/main/resources/keys/private.pem
+**/src/main/resources/keys/private.pem
