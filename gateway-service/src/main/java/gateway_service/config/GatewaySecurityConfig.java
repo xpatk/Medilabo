@@ -84,7 +84,11 @@ public class GatewaySecurityConfig {
                         .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .pathMatchers(HttpMethod.POST, "/api/auth/login")
                         .permitAll()
-                        .pathMatchers("/api/patients/**", "/api/notes/**")
+                        .pathMatchers(
+                                "/api/patients/**",
+                                "/api/notes/**",
+                                "/api/assessments/**"
+                        )
                         .hasRole("ORGANIZER")
                         .anyExchange().denyAll()
                 )

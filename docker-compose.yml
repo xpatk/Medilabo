@@ -61,6 +61,15 @@ services:
       mongodb:
         condition: service_healthy
 
+  assessment-service:
+    build:
+      context: ./assessment-service
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - patient-service
+      - notes-service
+
   auth-service:
     build:
       context: ./auth-service
@@ -80,6 +89,7 @@ services:
     depends_on:
       - patient-service
       - notes-service
+      - assessment-service
       - auth-service
 
   frontend-service:
