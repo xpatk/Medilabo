@@ -10,6 +10,9 @@ import { Patient } from '../../models/patient';
 import { NoteService } from '../../services/note.service';
 import { PatientService } from '../../services/patient.service';
 
+import { Assessment } from '../../models/assessment';
+import { AssessmentService } from '../../services/assessment.service';
+
 @Component({
   selector: 'app-patient-detail',
   imports: [DatePipe, FormsModule, RouterLink],
@@ -22,6 +25,7 @@ export class PatientDetail implements OnInit {
   private readonly patientService = inject(PatientService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly assessmentService = inject(AssessmentService);
 
   protected readonly patient = signal<Patient | null>(null);
   protected readonly notes = signal<Note[]>([]);
@@ -35,6 +39,10 @@ export class PatientDetail implements OnInit {
   protected readonly savingNote = signal(false);
 
   protected readonly newNoteText = signal('');
+
+  protected readonly assessment = signal<Assessment | null>(null);
+  protected readonly assessmentLoading = signal(false);
+  protected readonly assessmentErrorMessage = signal('');
 
   ngOnInit(): void {
     if (!this.authService.isAuthenticated()) {
@@ -53,6 +61,7 @@ export class PatientDetail implements OnInit {
 
       this.loadPatient(id);
       this.loadNotes(id);
+      this.loadAssessment(id);
     });
   }
 
@@ -80,11 +89,12 @@ export class PatientDetail implements OnInit {
     this.savingNote.set(true);
 
     this.noteService.createForPatient(patient.id, text).subscribe({
-      next: (note) => {
-        this.notes.update((notes) => [note, ...notes]);
-        this.newNoteText.set('');
-        this.savingNote.set(false);
-      },
+next: (note) => {
+  this.notes.update((notes) => [note, ...notes]);
+  this.loadAssessment(patient.id);
+  this.newNoteText.set('');
+  this.savingNote.set(false);
+},
       error: (error: HttpErrorResponse) => {
         this.savingNote.set(false);
 
@@ -96,6 +106,23 @@ export class PatientDetail implements OnInit {
       },
     });
   }
+
+protected riskClass(): string {
+  const riskLevel = this.assessment()?.riskLevel;
+
+  switch (riskLevel) {
+    case 'None':
+      return 'risk-none';
+    case 'Borderline':
+      return 'risk-borderline';
+    case 'In Danger':
+      return 'risk-danger';
+    case 'Early onset':
+      return 'risk-early-onset';
+    default:
+      return '';
+  }
+}
 
   private loadPatient(id: number): void {
     this.loading.set(true);
@@ -143,6 +170,30 @@ export class PatientDetail implements OnInit {
       },
     });
   }
+
+private loadAssessment(patientId: number): void {
+  this.assessment.set(null);
+  this.assessmentLoading.set(true);
+  this.assessmentErrorMessage.set('');
+
+  this.assessmentService.getForPatient(patientId).subscribe({
+    next: (assessment) => {
+      this.assessment.set(assessment);
+      this.assessmentLoading.set(false);
+    },
+    error: (error: HttpErrorResponse) => {
+      this.assessmentLoading.set(false);
+
+      if (this.handleAuthenticationError(error)) {
+        return;
+      }
+
+      this.assessmentErrorMessage.set(
+        'Unable to calculate the diabetes risk assessment.',
+      );
+    },
+  });
+}
 
   private handleAuthenticationError(error: HttpErrorResponse): boolean {
     if (error.status !== 401 && error.status !== 403) {

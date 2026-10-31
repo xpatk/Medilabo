@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
@@ -66,29 +65,35 @@ public class AssessmentService {
     }
 
     private int countTriggers(List<NoteResponse> notes) {
-        return notes.stream()
-                .map(NoteResponse::text)
-                .filter(text -> text != null && !text.isBlank())
-                .map(this::normalize)
-                .mapToInt(this::countTriggersInText)
-                .sum();
-    }
+        boolean[] foundTriggers = new boolean[TRIGGER_PATTERNS.size()];
 
-    private int countTriggersInText(String normalizedText) {
-        return TRIGGER_PATTERNS.stream()
-                .mapToInt(pattern -> countOccurrences(pattern, normalizedText))
-                .sum();
-    }
+        for (NoteResponse note : notes) {
+            String text = note.text();
 
-    private int countOccurrences(Pattern pattern, String text) {
-        Matcher matcher = pattern.matcher(text);
-        int count = 0;
+            if (text == null || text.isBlank()) {
+                continue;
+            }
 
-        while (matcher.find()) {
-            count++;
+            String normalizedText = normalize(text);
+
+            for (int index = 0; index < TRIGGER_PATTERNS.size(); index++) {
+                Pattern triggerPattern = TRIGGER_PATTERNS.get(index);
+
+                if (triggerPattern.matcher(normalizedText).find()) {
+                    foundTriggers[index] = true;
+                }
+            }
         }
 
-        return count;
+        int triggerCount = 0;
+
+        for (boolean foundTrigger : foundTriggers) {
+            if (foundTrigger) {
+                triggerCount++;
+            }
+        }
+
+        return triggerCount;
     }
 
     private String normalize(String value) {

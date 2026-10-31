@@ -74,6 +74,28 @@
       </dl>
     </section>
 
+    <section class="assessment-section" aria-labelledby="assessment-title">
+      <div class="section-heading">
+        <div>
+          <p class="section-eyebrow">Diabetes prevention</p>
+          <h2 id="assessment-title">Risk assessment</h2>
+        </div>
+      </div>
+
+      @if (assessmentLoading()) {
+      <p class="loading-message">Calculating diabetes risk…</p>
+      } @else if (assessmentErrorMessage()) {
+      <p class="error-message" role="alert">
+        {{ assessmentErrorMessage() }}
+      </p>
+      } @else if (assessment()) {
+      <div [class]="'risk-result ' + riskClass()">
+        <span class="risk-label">Current risk level</span>
+        <strong>{{ assessment()!.riskLevel }}</strong>
+      </div>
+      }
+    </section>
+
     <section class="notes-section" aria-labelledby="notes-title">
       <div class="section-heading">
         <div>

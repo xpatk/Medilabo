@@ -110,7 +110,8 @@ button:hover:not(:disabled) {
 }
 
 .patient-details,
-.notes-section {
+.notes-section,
+.assessment-section {
   margin-top: 28px;
   padding: 26px;
   border: 1px solid #d8e7f2;
@@ -247,6 +248,50 @@ button:disabled {
   border: 1px solid #fecaca;
   background: #fff4f4;
   color: #b42318;
+}
+
+.risk-result {
+  display: grid;
+  gap: 7px;
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid;
+  border-radius: 12px;
+}
+
+.risk-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.risk-result strong {
+  font-size: 1.45rem;
+}
+
+.risk-none {
+  border-color: #86d6b0;
+  background: #edfdf4;
+  color: #137548;
+}
+
+.risk-borderline {
+  border-color: #f3cc7d;
+  background: #fff9eb;
+  color: #93620a;
+}
+
+.risk-danger {
+  border-color: #f3a07d;
+  background: #fff3ee;
+  color: #b54708;
+}
+
+.risk-early-onset {
+  border-color: #ee8d98;
+  background: #fff1f3;
+  color: #b4233f;
 }
 
 @media (max-width: 760px) {
