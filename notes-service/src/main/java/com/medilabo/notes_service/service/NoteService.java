@@ -9,6 +9,12 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.List;
 
+/**
+ * Gère l'historique des notes médicales associées aux patients.
+ *
+ * <p>Les notes sont stockées dans MongoDB et retournées de la plus récente
+ * à la plus ancienne.</p>
+ */
 @Service
 public class NoteService {
 
@@ -18,10 +24,23 @@ public class NoteService {
         this.noteRepository = noteRepository;
     }
 
+    /**
+     * Retourne les notes médicales associées à un patient.
+     *
+     * @param patientId identifiant du patient
+     * @return les notes du patient, triées de la plus récente à la plus ancienne
+     */
     public List<Note> getNotesForPatient(Long patientId) {
         return noteRepository.findAllByPatientIdOrderByCreatedAtDesc(patientId);
     }
 
+    /**
+     * Crée une nouvelle note de consultation pour un patient.
+     *
+     * @param patientId identifiant du patient concerné
+     * @param request contenu validé de la note à enregistrer
+     * @return la note enregistrée avec ses dates de création et de modification
+     */
     public Note createNote(Long patientId, CreateNoteRequest request) {
         Instant now = Instant.now();
 

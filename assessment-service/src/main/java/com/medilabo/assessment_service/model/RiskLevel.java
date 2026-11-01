@@ -2,6 +2,9 @@ package com.medilabo.assessment_service.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Niveaux de risque de diabète retournés par l'Assessment Service.
+ */
 public enum RiskLevel {
 
     NONE("None"),

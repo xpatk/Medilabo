@@ -19,6 +19,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * Configure l'authentification de l'organisateur dans l'Auth Service.
+ *
+ * <p>L'utilisateur est conservé en mémoire et son mot de passe est chiffré
+ * avec BCrypt. Seul l'endpoint de connexion est accessible sans JWT.</p>
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -28,6 +34,13 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Crée l'utilisateur organisateur conservé en mémoire.
+     *
+     * @param passwordEncoder encodeur BCrypt utilisé pour chiffrer le mot de passe
+     * @param organizerPassword mot de passe fourni par la configuration sécurisée
+     * @return service contenant l'utilisateur organisateur
+     */
     @Bean
     public UserDetailsService userDetailsService(
             PasswordEncoder passwordEncoder,
@@ -48,6 +61,16 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
+    /**
+     * Définit les règles de sécurité de l'Auth Service.
+     *
+     * <p>Seule la requête POST vers {@code /api/auth/login} est publique.
+     * Les autres requêtes sont refusées.</p>
+     *
+     * @param http configuration de sécurité Spring
+     * @return chaîne de filtres de sécurité
+     * @throws Exception en cas d'erreur de configuration
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http

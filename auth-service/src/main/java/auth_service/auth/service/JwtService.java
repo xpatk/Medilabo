@@ -14,6 +14,13 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
+/**
+ * Crée les jetons JWT utilisés pour sécuriser les échanges entre le frontend
+ * et les microservices Medilabo.
+ *
+ * <p>Les jetons sont signés avec l'algorithme RSA RS256 et contiennent
+ * l'identifiant de l'utilisateur, son rôle ainsi que leur date d'expiration.</p>
+ */
 @Service
 public class JwtService {
 
@@ -31,6 +38,12 @@ public class JwtService {
         this.accessTokenTtl = accessTokenTtl;
     }
 
+    /**
+     * Génère un JWT signé pour un utilisateur authentifié.
+     *
+     * @param authentication résultat de l'authentification Spring Security
+     * @return réponse contenant le jeton, son type et sa durée de validité
+     */
     public TokenResp createToken(Authentication authentication) {
 
         Instant now = Instant.now();

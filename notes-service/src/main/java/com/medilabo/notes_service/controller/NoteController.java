@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Expose les endpoints REST permettant de consulter et d'ajouter
+ * des notes médicales pour un patient.
+ */
 @RestController
 @Validated
 @RequestMapping("/api/notes/patients/{patientId}")
@@ -22,6 +26,12 @@ public class NoteController {
         this.noteService = noteService;
     }
 
+    /**
+     * Retourne l'historique des notes d'un patient.
+     *
+     * @param patientId identifiant positif du patient
+     * @return les notes du patient, de la plus récente à la plus ancienne
+     */
     @GetMapping
     public List<Note> getNotesForPatient(
             @PathVariable @Positive Long patientId
@@ -29,6 +39,13 @@ public class NoteController {
         return noteService.getNotesForPatient(patientId);
     }
 
+    /**
+     * Ajoute une nouvelle note de consultation à l'historique d'un patient.
+     *
+     * @param patientId identifiant positif du patient
+     * @param request contenu validé de la note à créer
+     * @return la note médicale créée
+     */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Note createNote(

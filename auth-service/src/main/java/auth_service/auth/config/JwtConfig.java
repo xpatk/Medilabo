@@ -18,6 +18,13 @@ import java.io.IOException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
+/**
+ * Configure les clés RSA et l'encodeur JWT de l'Auth Service.
+ *
+ * <p>La clé privée est utilisée uniquement ici pour signer les jetons.
+ * La clé publique est distribuée aux autres microservices afin qu'ils
+ * puissent vérifier les signatures.</p>
+ */
 @Configuration
 public class JwtConfig {
 
@@ -39,6 +46,13 @@ public class JwtConfig {
         );
     }
 
+    /**
+     * Crée l'encodeur chargé de signer les JWT avec la paire de clés RSA.
+     *
+     * @param publicKey clé publique RSA
+     * @param privateKey clé privée RSA
+     * @return encodeur JWT configuré avec l'algorithme RS256
+     */
     @Bean
     public JwtEncoder jwtEncoder(
             RSAPublicKey publicKey,

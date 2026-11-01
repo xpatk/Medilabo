@@ -15,6 +15,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+/**
+ * Calcule le niveau de risque de diabète d'un patient.
+ *
+ * <p>Le service récupère les informations personnelles auprès du Patient Service
+ * et les notes médicales auprès du Notes Service.</p>
+ *
+ * <p>Les termes déclencheurs sont recherchés sans tenir compte de la casse
+ * ni des accents. Chaque type de déclencheur est compté une seule fois,
+ * même s'il apparaît plusieurs fois dans les notes.</p>
+ */
 @Service
 public class AssessmentService {
 
@@ -44,6 +54,13 @@ public class AssessmentService {
         this.noteClient = noteClient;
     }
 
+    /**
+     * Évalue le risque de diabète d'un patient.
+     *
+     * @param patientId identifiant du patient à évaluer
+     * @param authorizationHeader jeton JWT transmis aux microservices appelés
+     * @return résultat contenant l'identifiant du patient et son niveau de risque
+     */
     public AssessmentResponse assessPatient(
             Long patientId,
             String authorizationHeader
@@ -64,6 +81,9 @@ public class AssessmentService {
         return new AssessmentResponse(patient.id(), riskLevel);
     }
 
+    /**
+     * Compte les types distincts de termes déclencheurs présents dans les notes.
+     */
     private int countTriggers(List<NoteResponse> notes) {
         boolean[] foundTriggers = new boolean[TRIGGER_PATTERNS.size()];
 
@@ -96,12 +116,18 @@ public class AssessmentService {
         return triggerCount;
     }
 
+    /**
+     * Normalise un texte afin d'ignorer la casse et les accents lors de la recherche.
+     */
     private String normalize(String value) {
         return Normalizer.normalize(value, Normalizer.Form.NFD)
                 .replaceAll("\\p{M}", "")
                 .toLowerCase(Locale.ROOT);
     }
 
+    /**
+     * Détermine le niveau de risque à partir de l'âge, du genre et du nombre de déclencheurs.
+     */
     private RiskLevel determineRiskLevel(
             PatientResponse patient,
             int triggerCount
