@@ -1,0 +1,6 @@
+target/
+.git/
+.idea/
+*.iml
+src/main/resources/application-local.properties
+src/main/resources/keys/private.pem
