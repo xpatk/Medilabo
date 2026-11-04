@@ -22,7 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 /**
  * Configure l'authentification de l'organisateur dans l'Auth Service.
  *
- * <p>L'utilisateur est conservé en mémoire et son mot de passe est chiffré
+ * <p>L'utilisateur est conservé en mémoire et son mot de passe est haché
  * avec BCrypt. Seul l'endpoint de connexion est accessible sans JWT.</p>
  */
 @Configuration

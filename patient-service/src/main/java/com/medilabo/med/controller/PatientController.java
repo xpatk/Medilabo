@@ -23,6 +23,8 @@ public class PatientController {
 
     /**
      * Retourne la liste de tous les patients.
+     *
+     * @return liste des patients enregistrés, éventuellement vide
      */
     @GetMapping
     public List<Patient> getAllPatients() {
@@ -33,6 +35,7 @@ public class PatientController {
      * Retourne les informations personnelles d'un patient.
      *
      * @param id identifiant du patient
+     * @return patient correspondant à l'identifiant
      */
     @GetMapping("/{id}")
     public Patient getPatientById(@PathVariable Long id) {
@@ -40,9 +43,10 @@ public class PatientController {
     }
 
     /**
-     * Recherche des patients à partir de leur nom de famille.
+     * Recherche les patients par nom exact, sans distinction de casse.
      *
      * @param lastName nom de famille recherché
+     * @return liste des patients correspondants, éventuellement vide
      */
     @GetMapping("/search")
     public List<Patient> getPatientsByLastName(
@@ -54,6 +58,7 @@ public class PatientController {
      * Crée un nouveau dossier patient.
      *
      * @param patient informations validées du patient
+     * @return patient enregistré avec son identifiant généré
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -66,6 +71,7 @@ public class PatientController {
      *
      * @param id identifiant du patient à modifier
      * @param patient nouvelles informations validées
+     * @return dossier patient mis à jour
      */
     @PutMapping("/{id}")
     public Patient updatePatient(
