@@ -34,7 +34,7 @@ public class NoteController {
      */
     @GetMapping
     public List<Note> getNotesForPatient(
-            @PathVariable @Positive Long patientId
+            @PathVariable Long patientId
     ) {
         return noteService.getNotesForPatient(patientId);
     }
@@ -49,7 +49,7 @@ public class NoteController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Note createNote(
-            @PathVariable @Positive Long patientId,
+            @PathVariable Long patientId,
             @Valid @RequestBody CreateNoteRequest request
     ) {
         return noteService.createNote(patientId, request);
